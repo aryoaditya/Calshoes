@@ -11,9 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CalshoesDbContext>(opt => {
-
      opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-
 });
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
