@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CalshoesDbContext))]
-    [Migration("20240504144143_InitialMigration")]
+    [Migration("20240507042717_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -78,10 +78,14 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("name");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id");
 
                     b.ToTable("tb_m_product_brands");
                 });
@@ -94,10 +98,15 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("name");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("tb_m_product_categories");
                 });
@@ -110,6 +119,7 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("image_url");
 
@@ -118,6 +128,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnName("product_id");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.HasIndex("ProductId");
 
@@ -140,7 +153,7 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnName("product_id");
 
                     b.Property<decimal>("Size")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("decimal(2,2)")
                         .HasColumnName("size");
 
                     b.Property<int>("StockQuantity")
@@ -148,6 +161,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnName("stock_quantity");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.HasIndex("ProductId");
 
@@ -157,13 +173,13 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Core.Models.Product", b =>
                 {
                     b.HasOne("Core.Models.ProductBrand", "ProductBrand")
-                        .WithMany()
+                        .WithMany("Product")
                         .HasForeignKey("ProductBrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Models.ProductCategory", "ProductCategory")
-                        .WithMany()
+                        .WithMany("Product")
                         .HasForeignKey("ProductCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -200,6 +216,16 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("ProductImages");
 
                     b.Navigation("ProductVariants");
+                });
+
+            modelBuilder.Entity("Core.Models.ProductBrand", b =>
+                {
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Core.Models.ProductCategory", b =>
+                {
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

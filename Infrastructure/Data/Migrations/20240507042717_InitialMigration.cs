@@ -17,7 +17,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    name = table.Column<string>(type: "nvarchar(100)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,7 +30,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    name = table.Column<string>(type: "nvarchar(100)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,7 +74,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    image_url = table.Column<string>(type: "nvarchar(100)", nullable: true),
+                    image_url = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     product_id = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -94,7 +94,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    size = table.Column<decimal>(type: "TEXT", nullable: false),
+                    size = table.Column<decimal>(type: "decimal(2,2)", nullable: false),
                     color = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     stock_quantity = table.Column<int>(type: "INTEGER", nullable: false),
                     product_id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -111,9 +111,32 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_tb_m_product_brands_id",
+                table: "tb_m_product_brands",
+                column: "id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_m_product_categories_id",
+                table: "tb_m_product_categories",
+                column: "id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_m_product_images_id",
+                table: "tb_m_product_images",
+                column: "id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_tb_m_product_images_product_id",
                 table: "tb_m_product_images",
                 column: "product_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_m_product_variants_id",
+                table: "tb_m_product_variants",
+                column: "id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_tb_m_product_variants_product_id",

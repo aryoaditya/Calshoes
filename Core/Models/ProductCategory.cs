@@ -7,5 +7,8 @@ namespace Core.Models
     {
         [Column(name: "name", TypeName = "nvarchar(100)")]
         public string Name { get; set; }
+
+        // Cardinality
+        public ICollection<Product> Product { get; set; }
     }
 }
