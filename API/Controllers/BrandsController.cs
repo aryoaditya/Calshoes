@@ -8,7 +8,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BrandsController : ControllerBase
+    public class BrandsController : BaseApiController
     {
         private readonly IGenericRepository<ProductBrand> _brandsRepo;
         private readonly IMapper _imapper;
