@@ -1,3 +1,5 @@
+using API.Dtos;
+using AutoMapper;
 using Core.Interfaces;
 using Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +11,20 @@ namespace API.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly IGenericRepository<ProductCategory> _categoriesRepo;
+        private readonly IMapper _imapper;
 
-        public CategoriesController(IGenericRepository<ProductCategory> categoriesRepo)
+        public CategoriesController(IGenericRepository<ProductCategory> categoriesRepo, IMapper imapper)
         {
             _categoriesRepo = categoriesRepo;
+            _imapper = imapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductCategory>>> GetAllAsync()
+        public async Task<ActionResult<List<ProductCategoryReturnDto>>> GetAllCategories()
         {
-            return Ok(await _categoriesRepo.GetAllAsync());
+            var categories = await _categoriesRepo.GetAllAsync();
+
+            return Ok(_imapper.Map<IReadOnlyList<ProductCategory>, IReadOnlyList<ProductCategoryReturnDto>>(categories));
         }
     }
 }
