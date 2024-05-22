@@ -73,6 +73,20 @@ namespace Infrastructure.Data
                 entity.Property(pv => pv.Size).IsRequired().HasColumnType("decimal(2,2)");
                 entity.Property(pv => pv.StockQuantity).IsRequired();
             });
+            
+            // overcomes SQLite's limitations in supporting decimal data types
+            if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
+            {
+                foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+                {
+                    var properties = entityType.ClrType.GetProperties().Where(p => p.PropertyType == typeof(decimal));
+
+                    foreach (var property in properties)
+                    {
+                        modelBuilder.Entity(entityType.Name).Property(property.Name).HasConversion<double>();
+                    }
+                }
+            }
 
         }
 
