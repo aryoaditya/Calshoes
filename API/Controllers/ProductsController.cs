@@ -1,5 +1,6 @@
 using API.Dtos;
 using API.Errors;
+using API.Helpers;
 using AutoMapper;
 using Core.Interfaces;
 using Core.Models;
@@ -22,12 +23,19 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductReturnDto>>> GetAllProducts(string sort,  int? brandId, int? categoryId)
+        public async Task<ActionResult<List<ProductReturnDto>>> GetAllProducts([FromQuery] ProductSpecParameters productParams)
         {
-            var spec = new ProductsWithBrandsAndCategoriesSpecification(sort, brandId, categoryId);
+            var spec = new ProductsWithBrandsAndCategoriesSpecification(productParams);
+
+            var countSpec = new ProductsWithFiltersForCountSpecification(productParams);
+
+            var totalItems = await _productsRepo.CountAsync(countSpec);
+
             var products = await _productsRepo.GetAllWithSpecAsync(spec);
 
-            return Ok(_imapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductReturnDto>>(products));
+            var data = _imapper.Map<IReadOnlyList<ProductReturnDto>>(products);
+
+            return Ok(new Pagination<ProductReturnDto>(productParams.PageIndex, productParams.PageSize, totalItems, data));
         }
 
         [HttpGet("{id}")]

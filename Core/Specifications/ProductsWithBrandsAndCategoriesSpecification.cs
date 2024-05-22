@@ -4,18 +4,19 @@ namespace Core.Specifications
 {
     public class ProductsWithBrandsAndCategoriesSpecification : BaseSpecification<Product>
     {
-        public ProductsWithBrandsAndCategoriesSpecification(string sort, int? brandId, int? categoryId) : base(x => 
-            (!brandId.HasValue || x.ProductBrandId == brandId) &&
-            (!categoryId.HasValue || x.ProductCategoryId == categoryId)
+        public ProductsWithBrandsAndCategoriesSpecification(ProductSpecParameters productParams) : base(x => 
+            (!productParams.BrandId.HasValue || x.ProductBrandId == productParams.BrandId) &&
+            (!productParams.CategoryId.HasValue || x.ProductCategoryId == productParams.CategoryId)
         )
         {
             AddInclude(e => e.ProductBrand);
             AddInclude(e => e.ProductCategory);
             AddOrderBy(e => e.CreatedDate);
+            ApplyPaging(productParams.PageSize * (productParams.PageIndex - 1), productParams.PageSize);
 
-            if (!string.IsNullOrEmpty(sort))
+            if (!string.IsNullOrEmpty(productParams.Sort))
             {
-                switch (sort)
+                switch (productParams.Sort)
                 {
                     case "priceAsc":
                         AddOrderBy(p => p.Price);
