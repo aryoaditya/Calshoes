@@ -5,6 +5,7 @@ namespace Core.Specifications
     public class ProductsWithBrandsAndCategoriesSpecification : BaseSpecification<Product>
     {
         public ProductsWithBrandsAndCategoriesSpecification(ProductSpecParameters productParams) : base(x => 
+            (string.IsNullOrEmpty(productParams.Search) || x.Name.ToLower().Contains(productParams.Search)) &&
             (!productParams.BrandId.HasValue || x.ProductBrandId == productParams.BrandId) &&
             (!productParams.CategoryId.HasValue || x.ProductCategoryId == productParams.CategoryId)
         )
