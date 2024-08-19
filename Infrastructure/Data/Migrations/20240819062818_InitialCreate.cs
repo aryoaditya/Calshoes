@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Infrastructure.Data.Migrations
+namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,8 +15,8 @@ namespace Infrastructure.Data.Migrations
                 name: "tb_m_product_brands",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -28,8 +28,8 @@ namespace Infrastructure.Data.Migrations
                 name: "tb_m_product_categories",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -41,15 +41,15 @@ namespace Infrastructure.Data.Migrations
                 name: "tb_m_products",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    description = table.Column<string>(type: "TEXT", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    product_brand_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    product_category_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    created_date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    modified_date = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    product_brand_id = table.Column<int>(type: "int", nullable: false),
+                    product_category_id = table.Column<int>(type: "int", nullable: false),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    modified_date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,10 +72,10 @@ namespace Infrastructure.Data.Migrations
                 name: "tb_m_product_images",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     image_url = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    product_id = table.Column<int>(type: "INTEGER", nullable: false)
+                    product_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,12 +92,12 @@ namespace Infrastructure.Data.Migrations
                 name: "tb_m_product_variants",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     size = table.Column<decimal>(type: "decimal(2,2)", nullable: false),
                     color = table.Column<string>(type: "nvarchar(50)", nullable: true),
-                    stock_quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    product_id = table.Column<int>(type: "INTEGER", nullable: false)
+                    stock_quantity = table.Column<int>(type: "int", nullable: false),
+                    product_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
